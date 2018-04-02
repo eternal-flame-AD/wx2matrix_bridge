@@ -12,8 +12,11 @@ PS：还没有写daemon的代码所以如果要挂机可以使用screen或者noh
   python ./mainbridge.py
 ### 使用
   所有命令都在matrix房间里发送：
+  
   发送消息：【昵称/微信号/备注】<-【内容】 **注意： <-和前面的名称不能有多余的空格！**
+  
   获取好友列表：getuserlist
+  
   检查活动：checkalive
 ### 安全性：
   1. matrix-python-sdk暂时还不支持端到端加密，所以尽量用https的服务器
