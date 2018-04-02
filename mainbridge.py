@@ -3,6 +3,7 @@ import config,time
 weixin=None
 matrix=None
 lastRecipient=""
+lastsync=time.asctime(time.localtime())
 import os
 def delete_file_folder(src):
     '''delete files and folders'''
@@ -29,8 +30,11 @@ def wximg2riot(imgdir):
 def wxaudio2riot(fdir):
     global weixin,matrix
     matrix.sendAudio(fdir)
+def wxSyncSuccessCallback():
+    global lastsync
+    lastsync=time.asctime(time.localtime())
 def riot2wx(room,rtEvent):
-    global weixin,matrix,lastRecipient
+    global weixin,matrix,lastRecipient,lastsync
     rtMsgData=""
     print("got matrix event:",rtEvent)
     if rtEvent['type'] == "m.room.message":
@@ -51,8 +55,10 @@ def riot2wx(room,rtEvent):
             for user in weixin.bot.MemberList:
                 resp+=user['NickName']+((' aka: '+user['RemarkName']) if len(user['RemarkName'])>0 else "")+"<br />"
             matrix.sendHtml(resp)
-        elif rtMsgData=="checkalive":
+        elif rtMsgData=="status":
             matrix.sendMsg("I'm alive")
+            matrix.sendMsg(str(weixin.bot))
+            matrix.sendMsg("Last success sync: "+lastsync)
         elif rtMsgData=="cleartrash":
             delete_file_folder("./saved")
             matrix.sendMsg("Clear command sent...")
@@ -65,7 +71,7 @@ def riot2wx(room,rtEvent):
 def main():
     global weixin,matrix
     matrix=MatrixHandler(config.matrix_username,config.matrix_password,config.matrix_room,gotMsgCallback=riot2wx)
-    weixin=WeiXinHandler(gotMsgCallback=wx2riot,gotImgCallback=wximg2riot,gotAudioCallback=wxaudio2riot)
+    weixin=WeiXinHandler(gotMsgCallback=wx2riot,gotImgCallback=wximg2riot,gotAudioCallback=wxaudio2riot,syncSuccessCallback=wxSyncSuccessCallback)
     weixin.start()
 if __name__=="__main__":
     main()

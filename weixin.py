@@ -29,6 +29,8 @@ from socket import timeout as timeout_error
 import mimetypes
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
+def blackHole(*args,**kwargs):
+    pass
 
 
 def _decode_list(data):
@@ -75,9 +77,10 @@ class WebWeixin(object):
             "========================="
         return description
 
-    def __init__(self,msgCallback,imgCallback,audioCallback):
+    def __init__(self,msgCallback=blackHole,imgCallback=blackHole,audioCallback=blackHole,syncSucessCallback=blackHole):
         self.msgCallback=msgCallback
         self.imgCallback=imgCallback
+        self.syncSuccessCallback=syncSucessCallback
         self.audioCallback=audioCallback
         self.DEBUG = False
         self.commandLineQRCode = False
@@ -880,15 +883,19 @@ class WebWeixin(object):
             if self.DEBUG:
                 print('retcode: %s, selector: %s' % (retcode, selector))
             logging.debug('retcode: %s, selector: %s' % (retcode, selector))
+            retcode=str(retcode)
             if retcode == '1100':
+                self.msgCallback('[*] 你在手机上登出了微信，债见')
                 print('[*] 你在手机上登出了微信，债见')
                 logging.debug('[*] 你在手机上登出了微信，债见')
                 break
             if retcode == '1101':
+                self.msgCallback('[*] 你在其他地方登录了 WEB 版微信，债见')
                 print('[*] 你在其他地方登录了 WEB 版微信，债见')
                 logging.debug('[*] 你在其他地方登录了 WEB 版微信，债见')
                 break
-            elif retcode == '0':
+            elif retcode == '0' or retcode == '-1':
+                self.syncSuccessCallback()
                 if selector == '2':
                     r = self.webwxsync()
                     if r is not None:
@@ -905,6 +912,8 @@ class WebWeixin(object):
                     r = self.webwxsync()
                 elif selector == '0':
                     time.sleep(1)
+            else:
+                self.msgCallback('WARN: Unknown retcode:'+retcode)
             if (time.time() - self.lastCheckTs) <= 20:
                 time.sleep(time.time() - self.lastCheckTs)
 
@@ -1201,8 +1210,6 @@ class UnicodeStreamFilter:
 if sys.stdout.encoding == 'cp936':
     sys.stdout = UnicodeStreamFilter(sys.stdout)
 
-def blackHole(*args,**kwargs):
-    pass
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)

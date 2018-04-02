@@ -1,9 +1,9 @@
 def blackhole(*args,**kwargs):
     pass
 class WeiXinHandler():
-    def __init__(self,gotMsgCallback=blackhole,gotImgCallback=blackhole,gotAudioCallback=blackhole):
+    def __init__(self,gotMsgCallback=blackhole,gotImgCallback=blackhole,gotAudioCallback=blackhole,syncSuccessCallback=blackhole):
         from weixin import WebWeixin
-        self.bot=WebWeixin(gotMsgCallback,gotImgCallback,gotAudioCallback)
+        self.bot=WebWeixin(gotMsgCallback,gotImgCallback,gotAudioCallback,syncSuccessCallback)
         '''
         self.gotMsgCallback=gotMsgCallback
     def handlecallback(self,data):
