@@ -19,7 +19,7 @@ PS：还没有写daemon的代码所以如果要挂机可以使用screen或者noh
   
   获取好友列表：getuserlist
   
-  检查活动：checkalive
+  检查状态：status
   
   清除媒体文件: cleartrash
 ### 安全性：
