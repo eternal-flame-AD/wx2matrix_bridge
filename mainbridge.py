@@ -2,9 +2,30 @@ from messagehandler import WeiXinHandler,MatrixHandler
 import config,time
 weixin=None
 matrix=None
+
+import os
+def delete_file_folder(src):
+    '''delete files and folders'''
+    if os.path.isfile(src):
+        try:
+            os.remove(src)
+        except:
+            pass
+    elif os.path.isdir(src):
+        for item in os.listdir(src):
+            itemsrc=os.path.join(src,item)
+            delete_file_folder(itemsrc) 
+        try:
+            os.rmdir(src)
+        except:
+            pass
+
 def wx2riot(wxMsgData):
     global weixin,matrix
     matrix.sendMsg(wxMsgData)
+def wximg2riot(imgdir):
+    global weixin,matrix
+    matrix.sendImg(imgdir)
 def riot2wx(room,rtEvent):
     global weixin,matrix
     rtMsgData=""
@@ -26,10 +47,14 @@ def riot2wx(room,rtEvent):
             matrix.sendHtml(resp)
         elif rtMsgData=="checkalive":
             matrix.sendMsg("I'm alive")
+        elif rtMsgData=="cleartrash":
+            delete_file_folder("./saved")
+            matrix.sendMsg("Clear command sent...")
+
 def main():
     global weixin,matrix
     matrix=MatrixHandler(config.matrix_username,config.matrix_password,config.matrix_room,gotMsgCallback=riot2wx)
-    weixin=WeiXinHandler(gotMsgCallback=wx2riot)
+    weixin=WeiXinHandler(gotMsgCallback=wx2riot,gotImgCallback=wximg2riot)
     weixin.start()
 if __name__=="__main__":
     main()

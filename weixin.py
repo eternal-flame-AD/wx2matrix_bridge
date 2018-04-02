@@ -75,8 +75,9 @@ class WebWeixin(object):
             "========================="
         return description
 
-    def __init__(self,msgCallback):
+    def __init__(self,msgCallback,imgCallback):
         self.msgCallback=msgCallback
+        self.imgCallback=imgCallback
         self.DEBUG = False
         self.commandLineQRCode = False
         self.uuid = ''
@@ -608,7 +609,7 @@ class WebWeixin(object):
     def webwxgetmsgimg(self, msgid):
         url = self.base_uri + \
             '/webwxgetmsgimg?MsgID=%s&skey=%s' % (msgid, self.skey)
-        data = self._get(url)
+        data = self._get(url,api='webwxgetmsgimg')
         if data == '':
             return ''
         fn = 'img_' + msgid + '.jpg'
@@ -800,6 +801,7 @@ class WebWeixin(object):
                 image = self.webwxgetmsgimg(msgid)
                 raw_msg = {'raw_msg': msg,
                            'message': '%s 发送了一张图片: %s' % (name, image)}
+                self.imgCallback(image)
                 self._showMsg(raw_msg)
                 self._safe_open(image)
             elif msgType == 34:
@@ -1093,7 +1095,7 @@ class WebWeixin(object):
             request.add_header('Range', 'bytes=0-')
         try:
             response = urllib.request.urlopen(request, timeout=timeout) if timeout else urllib.request.urlopen(request)
-            if api == 'webwxgetvoice' or api == 'webwxgetvideo':
+            if api == 'webwxgetvoice' or api == 'webwxgetvideo' or api == 'webwxgetmsgimg':
                 data = response.read()
             else:
                 data = response.read().decode('utf-8')
