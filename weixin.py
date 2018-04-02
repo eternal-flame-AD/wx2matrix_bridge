@@ -850,7 +850,7 @@ class WebWeixin(object):
                     'appname': self._searchContent('appname', content, 'xml')
                 }
                 raw_msg = {'raw_msg': msg, 'message': '%s 分享了一个%s: %s' % (
-                    name, appMsgType[msg['AppMsgType']], json.dumps(card))}
+                    name, appMsgType[msg['AppMsgType']], str(card))}
                 self._showMsg(raw_msg)
             elif msgType == 51:
                 raw_msg = {'raw_msg': msg, 'message': '[*] 成功获取联系人信息'}
