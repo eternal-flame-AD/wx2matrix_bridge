@@ -7,6 +7,7 @@
 PS：还没有写daemon的代码所以如果要挂机可以使用screen或者nohup
 ### 初始化依赖
   pip insall -r requirements.txt
+  
   pip install ./matrix-python-sdk/
 ### 运行
   python ./mainbridge.py
