@@ -9,6 +9,10 @@ PS：还没有写daemon的代码所以如果要挂机可以使用screen或者noh
   pip insall -r requirements.txt
   
   pip install ./matrix-python-sdk/
+### 配置文件
+  cp ./config.py.sample ./config.py
+  
+  vim ./config.py
 ### 运行
   python ./mainbridge.py
 ### 使用
