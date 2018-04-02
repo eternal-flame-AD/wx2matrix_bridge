@@ -826,7 +826,7 @@ class WebWeixin(object):
                 print('= 性别: %s' % ['未知', '男', '女'][info['Sex']])
                 print('=========================')
                 raw_msg = {'raw_msg': msg, 'message': '%s 发送了一张名片: %s' % (
-                    name.strip(), json.dumps(info))}
+                    name.strip(), str(info))}
                 self._showMsg(raw_msg)
             elif msgType == 47:
                 url = self._searchContent('cdnurl', content)
@@ -867,7 +867,7 @@ class WebWeixin(object):
                 self._showMsg(raw_msg)
             else:
                 logging.debug('[*] 该消息类型为: %d，可能是表情，图片, 链接或红包: %s' %
-                              (msg['MsgType'], json.dumps(msg)))
+                              (msg['MsgType'], str(msg)))
                 raw_msg = {
                     'raw_msg': msg, 'message': '[*] 该消息类型为: %d，可能是表情，图片, 链接或红包' % msg['MsgType']}
                 self._showMsg(raw_msg)
@@ -991,7 +991,7 @@ class WebWeixin(object):
             logging.debug('[*] 微信网页版 ... 开动')
             self.genQRCode()
             print('[*] 请使用微信扫描二维码以登录 ... ')
-            self.imgCallback(self.saveFolder+'/qrcodes/qrcode.png')
+            #self.imgCallback(self.saveFolder+'/qrcodes/qrcode.png')
             if not self.waitForLogin():
                 continue
                 print('[*] 请在手机上点击确认以登录 ... ')
@@ -1090,8 +1090,8 @@ class WebWeixin(object):
         qr.border = 1
         qr.add_data(str)
         qr.make()
-        img = qr.make_image()
-        img.save(self.saveFolder+"/qrcodes/qrcode.png")
+        #img = qr.make_image()
+        #img.save(self.saveFolder+"/qrcodes/qrcode.png")
         #mat = qr.get_matrix()
         #self._printQR(mat)  # qr.print_tty() or qr.print_ascii()
         qr.print_ascii(invert=True)
