@@ -1,13 +1,18 @@
 # wx2matrix_bridge
 
 ## Description
-  实在无法忍受手机上装这样一个软件所以写了一个，的微信Matrix桥，目前支持文字 语音 图片的转发，使用了matrix-org/matrix-python-sdk（见./matrix-python-sdk/LICENCE）和Urinx/WeixinBot（均为Apache 2.0协议故没有另加LICENCE文件）的代码
+  实在无法忍受手机上装这样一个软件所以写了一个微信2Matrix桥，目前支持文字 语音 图片的转发，使用了matrix-org/matrix-python-sdk（见./matrix-python-sdk/LICENSE）和Urinx/WeixinBot（均为Apache 2.0协议故没有另加LICENSE文件）的代码
 
 ## Usage
 PS：还没有写daemon的代码所以如果要挂机可以使用screen或者nohup
 ### 初始化依赖
   pip insall -r requirements.txt
+  
   pip install ./matrix-python-sdk/
+### 配置文件
+  cp ./config.py.sample ./config.py
+  
+  vim ./config.py
 ### 运行
   python ./mainbridge.py
 ### 使用
