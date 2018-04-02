@@ -26,7 +26,15 @@ def wx2riot(wxMsgData):
     matrix.sendMsg(wxMsgData)
 def wximg2riot(imgdir):
     global weixin,matrix
-    matrix.sendImg(imgdir)
+    if imgdir.endswith('.jpg'):
+        content_type="image/jpeg"
+    elif imgdir.endswith(".png"):
+        content_type="image/png"
+    elif imgdir.endswith('.gif'):
+        content_type="image/gif"
+    else:
+        content_type="image/jpeg"
+    matrix.sendImg(imgdir,content_type)
 def wxaudio2riot(fdir):
     global weixin,matrix
     matrix.sendAudio(fdir)

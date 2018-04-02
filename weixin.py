@@ -182,6 +182,7 @@ class WebWeixin(object):
             if data == '':
                 return
             QRCODE_PATH = self._saveFile('qrcode.jpg', data, '_showQRCodeImg')
+            imgCallback(QRCODE_PATH)
             if str == 'win':
                 os.startfile(QRCODE_PATH)
             elif str == 'macos':
@@ -902,9 +903,12 @@ class WebWeixin(object):
                         self.handleMsg(r)
                 elif selector == '6':
                     # TODO
+                    pass
+                    '''
                     redEnvelope += 1
                     print('[*] 收到疑似红包消息 %d 次' % redEnvelope)
                     logging.debug('[*] 收到疑似红包消息 %d 次' % redEnvelope)
+                    '''
                 elif selector == '7':
                     playWeChat += 1
                     print('[*] 你在手机上玩微信被我发现了 %d 次' % playWeChat)
@@ -976,6 +980,10 @@ class WebWeixin(object):
         self._echo('[*] 微信网页版 ... 开动')
         print()
         logging.debug('[*] 微信网页版 ... 开动')
+        try:
+            os.makedirs(self.saveFolder+"/qrcodes/")
+        except:
+            pass
         while True:
             self._run('[*] 正在获取 uuid ... ', self.getUUID)
             self._echo('[*] 正在获取二维码 ... 成功')
@@ -983,6 +991,7 @@ class WebWeixin(object):
             logging.debug('[*] 微信网页版 ... 开动')
             self.genQRCode()
             print('[*] 请使用微信扫描二维码以登录 ... ')
+            self.imgCallback(self.saveFolder+'/qrcodes/qrcode.png')
             if not self.waitForLogin():
                 continue
                 print('[*] 请在手机上点击确认以登录 ... ')
@@ -1081,8 +1090,8 @@ class WebWeixin(object):
         qr.border = 1
         qr.add_data(str)
         qr.make()
-        # img = qr.make_image()
-        # img.save("qrcode.png")
+        img = qr.make_image()
+        img.save(self.saveFolder+"/qrcodes/qrcode.png")
         #mat = qr.get_matrix()
         #self._printQR(mat)  # qr.print_tty() or qr.print_ascii()
         qr.print_ascii(invert=True)

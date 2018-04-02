@@ -36,9 +36,9 @@ class MatrixHandler():
     def sendMsg(self,msgData):
         res=self.room.send_text(msgData)
         return res
-    def sendImg(self,imgdir):
+    def sendImg(self,imgdir,content_type="image/jpeg"):
         with open(imgdir,mode="rb") as f:
-            uri=self.matrix.upload(f.read(),"image/jpeg")
+            uri=self.matrix.upload(f.read(),content_type)
             self.room.send_image(uri,'wximg')
             f.close()
     def sendAudio(self,fdir,content_type="audio/mp3"):
