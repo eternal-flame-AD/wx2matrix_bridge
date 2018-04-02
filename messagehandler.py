@@ -59,6 +59,3 @@ class MatrixHandler():
         self.gotMsgCallback(msgData)
     '''
         
-
-if __name__=="__main__":
-    MatrixHandler("eternal_flame_wxbridge","kJS31vdaLBs6aB2iYodh","#efwxMsg:matrix.org")
