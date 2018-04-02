@@ -75,9 +75,10 @@ class WebWeixin(object):
             "========================="
         return description
 
-    def __init__(self,msgCallback,imgCallback):
+    def __init__(self,msgCallback,imgCallback,audioCallback):
         self.msgCallback=msgCallback
         self.imgCallback=imgCallback
+        self.audioCallback=audioCallback
         self.DEBUG = False
         self.commandLineQRCode = False
         self.uuid = ''
@@ -808,6 +809,7 @@ class WebWeixin(object):
                 voice = self.webwxgetvoice(msgid)
                 raw_msg = {'raw_msg': msg,
                            'message': '%s 发了一段语音: %s' % (name, voice)}
+                self.audioCallback(voice)
                 self._showMsg(raw_msg)
                 self._safe_open(voice)
             elif msgType == 42:

@@ -1,9 +1,9 @@
 def blackhole(*args,**kwargs):
     pass
 class WeiXinHandler():
-    def __init__(self,gotMsgCallback=blackhole,gotImgCallback=blackhole):
+    def __init__(self,gotMsgCallback=blackhole,gotImgCallback=blackhole,gotAudioCallback=blackhole):
         from weixin import WebWeixin
-        self.bot=WebWeixin(gotMsgCallback,gotImgCallback)
+        self.bot=WebWeixin(gotMsgCallback,gotImgCallback,gotAudioCallback)
         '''
         self.gotMsgCallback=gotMsgCallback
     def handlecallback(self,data):
@@ -14,6 +14,8 @@ class WeiXinHandler():
     def sendMsg(self,name,word):
         res=self.bot.sendMsg(name,word)
         return res
+    def refreshContact(self):
+        return self.bot.webwxgetcontact()
 
 class MatrixHandler():
     def __init__(self,username,password,room,gotMsgCallback=blackhole):
@@ -38,6 +40,11 @@ class MatrixHandler():
         with open(imgdir,mode="rb") as f:
             uri=self.matrix.upload(f.read(),"image/jpeg")
             self.room.send_image(uri,'wximg')
+            f.close()
+    def sendAudio(self,fdir,content_type="audio/mp3"):
+        with open(fdir,mode="rb") as f:
+            uri=self.matrix.upload(f.read(),content_type)
+            self.room.send_audio(uri,'wxaudio')
             f.close()
     def sendHtml(self,htmlData):
         res=self.room.send_html(htmlData)
