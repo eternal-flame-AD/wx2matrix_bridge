@@ -169,10 +169,7 @@ class WebWeixin(object):
             self._str2qr('https://login.weixin.qq.com/l/' + self.uuid)
 
     def _showQRCodeImg(self, str):
-        if self.commandLineQRCode:
-            qrCode = QRCode('https://login.weixin.qq.com/l/' + self.uuid)
-            self._showCommandLineQRCode(qrCode.text(1))
-        elif self.sendQRCode2Mat:
+        if self.sendQRCode2Mat:
             url = 'https://login.weixin.qq.com/qrcode/' + self.uuid
             params = {
                 't': 'webwx',
@@ -184,6 +181,9 @@ class WebWeixin(object):
                 return
             QRCODE_PATH = self._saveFile('qrcode.jpg', data, '_showQRCodeImg')
             self.imgCallback(QRCODE_PATH)
+        elif self.commandLineQRCode:
+            qrCode = QRCode('https://login.weixin.qq.com/l/' + self.uuid)
+            self._showCommandLineQRCode(qrCode.text(1))
         else:
             url = 'https://login.weixin.qq.com/qrcode/' + self.uuid
             params = {
