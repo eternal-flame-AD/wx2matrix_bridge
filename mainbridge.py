@@ -79,7 +79,7 @@ def riot2wx(room,rtEvent):
 def main():
     global weixin,matrix
     matrix=MatrixHandler(config.matrix_username,config.matrix_password,config.matrix_room,gotMsgCallback=riot2wx)
-    weixin=WeiXinHandler(gotMsgCallback=wx2riot,gotImgCallback=wximg2riot,gotAudioCallback=wxaudio2riot,syncSuccessCallback=wxSyncSuccessCallback,sendQRCode2Mat=True)
+    weixin=WeiXinHandler(gotMsgCallback=wx2riot,gotImgCallback=wximg2riot,gotAudioCallback=wxaudio2riot,syncSuccessCallback=wxSyncSuccessCallback,sendQRCode2Mat=config.send_QR_code_to_matrix)
     weixin.start()
 if __name__=="__main__":
     main()

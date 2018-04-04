@@ -1,3 +1,4 @@
 matrix_username=""
 matrix_password=""
 matrix_room="#mybridge:matrix.org"
+send_QR_code_to_matrix=False

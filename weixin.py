@@ -183,7 +183,7 @@ class WebWeixin(object):
             if data == '':
                 return
             QRCODE_PATH = self._saveFile('qrcode.jpg', data, '_showQRCodeImg')
-            imgCallback(QRCODE_PATH)
+            self.imgCallback(QRCODE_PATH)
         else:
             url = 'https://login.weixin.qq.com/qrcode/' + self.uuid
             params = {
