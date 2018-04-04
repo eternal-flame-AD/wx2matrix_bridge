@@ -77,11 +77,12 @@ class WebWeixin(object):
             "========================="
         return description
 
-    def __init__(self,msgCallback=blackHole,imgCallback=blackHole,audioCallback=blackHole,syncSucessCallback=blackHole):
+    def __init__(self,msgCallback=blackHole,imgCallback=blackHole,audioCallback=blackHole,syncSucessCallback=blackHole,sendQRCode2Mat=False):
         self.msgCallback=msgCallback
         self.imgCallback=imgCallback
         self.syncSuccessCallback=syncSucessCallback
         self.audioCallback=audioCallback
+        self.sendQRCode2Mat=sendQRCode2Mat
         self.DEBUG = False
         self.commandLineQRCode = False
         self.uuid = ''
@@ -171,7 +172,7 @@ class WebWeixin(object):
         if self.commandLineQRCode:
             qrCode = QRCode('https://login.weixin.qq.com/l/' + self.uuid)
             self._showCommandLineQRCode(qrCode.text(1))
-        else:
+        elif self.sendQRCode2Mat:
             url = 'https://login.weixin.qq.com/qrcode/' + self.uuid
             params = {
                 't': 'webwx',
@@ -183,6 +184,17 @@ class WebWeixin(object):
                 return
             QRCODE_PATH = self._saveFile('qrcode.jpg', data, '_showQRCodeImg')
             imgCallback(QRCODE_PATH)
+        else:
+            url = 'https://login.weixin.qq.com/qrcode/' + self.uuid
+            params = {
+                't': 'webwx',
+                '_': int(time.time())
+            }
+
+            data = self._post(url, params, False)
+            if data == '':
+                return
+            QRCODE_PATH = self._saveFile('qrcode.jpg', data, '_showQRCodeImg')
             if str == 'win':
                 os.startfile(QRCODE_PATH)
             elif str == 'macos':
