@@ -161,6 +161,8 @@ class WebWeixin(object):
 
     def genQRCode(self):
         #return self._showQRCodeImg()
+        if self.sendQRCode2Mat:
+            self._showQRCodeImg('')
         if sys.platform.startswith('win'):
             self._showQRCodeImg('win')
         elif sys.platform.find('darwin') >= 0:
