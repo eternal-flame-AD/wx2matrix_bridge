@@ -895,7 +895,12 @@ class WebWeixin(object):
                 print('[*] 你在其他地方登录了 WEB 版微信，债见')
                 logging.debug('[*] 你在其他地方登录了 WEB 版微信，债见')
                 break
-            elif retcode == '0' or retcode == '-1':
+            if retcode == '1102':
+                self.msgCallback('[*] 登陆超时，债见')
+                print('[*] 登陆超时，债见')
+                logging.debug('[*] 登陆超时，债见')
+                break
+            if retcode == '0' or retcode == '-1':
                 self.syncSuccessCallback()
                 if selector == '2':
                     r = self.webwxsync()
